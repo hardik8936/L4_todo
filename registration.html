@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Form</title>
+
+    <style>
+        input#email:invalid,
+        input#password:invalid {
+            border: 1px solid red;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-image: url('https://static.vecteezy.com/system/resources/previews/002/924/892/large_2x/abstract-minimal-scene-with-geometric-forms-wood-podium-in-white-background-product-presentation-mock-up-show-cosmetic-product-display-podium-stage-pedestal-or-platform-3d-vector.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        h2 {
+            margin-top: 12px;
+            border-bottom: 2px solid black;
+            letter-spacing: 4px;
+            color: chocolate
+        }
+
+        .form-div {
+            width: 40%;
+            background-color: black;
+            color: white;
+            padding: 8px 16px;
+            box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px 2px rgba(0, 0, 0, 0.7);
+            border-radius: 16px;
+            margin: 16px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 24px;
+            opacity: 0.74;
+        }
+
+        form,
+        table {
+            width: 100%;
+        }
+
+        form input {
+            padding: 6px;
+            width: 100%;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        tr {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: justify;
+        }
+
+        button {
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            background-color: green;
+            color: aliceblue;
+            width: 30%;
+            font-size: 16px;
+            text-align: center;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgb(255, 255, 255);
+            color: black;
+            border: 1px solid black;
+            box-shadow: 2px 4px 8px 8px rgba(0, 0, 0, 0.3), 0 0 6px rgba(0, 0, 0, 0.9);
+        }
+
+        .entries-div {
+            width: fit-content;
+            background-color: black;
+            color: white;
+            padding: 8px 16px;
+            box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px 2px rgba(0, 0, 0, 0.7);
+            border-radius: 16px;
+            margin: 24px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 24px;
+            opacity: 0.74;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-div">
+        <h2>Registration form </h2>
+
+        <form id="form" style="width: 100%;" align="center">
+            <table cellspacing="30">
+                <tr>
+                    <td><label for="name">Name</label></td>
+                    <td><input type="text" id="name" name="name" required></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input type="email" id="email" name="email" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password</label></td>
+                    <td><input type="password" id="password" name="password" minlength="8" required></td>
+                </tr>
+                <tr>
+                    <td><label for="dob">Date of birth</label></td>
+                    <td><input type="date" id="dob" name="dob" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="terms" name="terms">
+                        <label for="terms">Accept Terms & Conditions</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" id="submit">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="entries-div">
+        <h2>User Entries</h2>
+        <div id="user-entries"></div>
+
+    </div>
+    <script>let userform = document.getElementById("form");
+
+        const retrieveEntries = () => {
+            let entries = localStorage.getItem("user-entries");
+            if (entries) {
+                entries = JSON.parse(entries);
+            } else {
+                entries = [];
+            }
+            return entries;
+        };
+
+        let userEntries = retrieveEntries();
+
+        const displayEntries = () => {
+            const entries = retrieveEntries();
+            console.log(entries);
+
+            const tableEntries = entries
+                .map((entry) => {
+                    const nameCell = `<td align="center" style="padding:4px 8px">${entry.name}</td>`;
+                    const emailCell = `<td align="center" style="padding:4px 8px">${entry.email}</td>`;
+                    const passwordCell = `<td align="center" style="padding:4px 8px">${entry.password}</td>`;
+                    const dobCell = `<td align="center" style="padding:4px 8px">${entry.dob}</td>`;
+                    const termsCell = `<td align="center" style="padding:4px 8px">${entry.terms}</td>`;
+
+                    const row = `<tr>${nameCell} ${emailCell} ${passwordCell} ${dobCell} ${termsCell}</tr>`;
+                    return row;
+                })
+                .join("\n");
+
+            const table = `<table border="2" style="margin-top:10px;"><tr>
+            <th align="center" style="padding:12px;">Name</th>
+            <th align="center" style="padding:12px;">Email</th>
+            <th align="center" style="padding:12px;">Password</th>
+            <th align="center" style="padding:12px;">Dob</th>
+            <th align="center" style="padding:12px;">Accepted terms?</th>
+            </tr>${tableEntries}</table>`;
+
+            let details = document.getElementById("user-entries");
+            details.innerHTML = table;
+        };
+
+        const saveUserForm = (event) => {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const dob = document.getElementById("dob").value;
+            const terms = document.getElementById("terms").checked;
+
+            const entry = {
+                name,
+                email,
+                password,
+                dob,
+                terms,
+            };
+            userEntries.push(entry);
+
+            localStorage.setItem("user-entries", JSON.stringify(userEntries));
+            displayEntries();
+        };
+        userform.addEventListener("submit", saveUserForm);
+        displayEntries();
+
+        let dateElement = document.getElementById("dob");
+        dateElement.addEventListener("change", () => {
+            let [year, month, date] = document.getElementById("dob").value.split("-");
+            let dob = new Date(year, month, date);
+            let age = getAge(dob);
+
+            if (age < 18 || age > 55) {
+                dateElement.setCustomValidity("Your age doesn't lies between 18 and 55.");
+            } else {
+                dateElement.setCustomValidity("");
+            }
+        });
+
+        function getAge(date) {
+            let today = new Date();
+            let birthDate = new Date(date);
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            let m = today.getMonth() - birthDate.getMonth();
+
+            if (m < 0 || (m === 0 && birthDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }</script>
+</body>
+
+</html>
